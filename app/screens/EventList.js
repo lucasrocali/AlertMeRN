@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  ScrollView
+  ScrollView,
+  StyleSheet
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { events } from '../config/data';
@@ -13,7 +14,8 @@ import {
   RefreshControl,
   // ...others
 } from 'react-native';
-connect(
+
+@connect(
   state => ({
     movies: state.movies,
     loading: state.loading,
@@ -23,28 +25,62 @@ connect(
   }),
 )
 
-class EventList extends Component {
+export default class EventList extends Component {
   showEvent = (event) => {
     this.props.navigation.navigate('EventDetail', { ...event });
   };
 
   render() {
+    console.log('FOO1');
+    console.log(this.props);
     const { movies, loading, refresh } = this.props;
+    console.log(movies);
+    console.log(loading);
+    console.log(refresh);
+
+    // movies ? movies.map((movie, index) => console.log(movie)) : console.log('NO movies');
     return (
-      <ScrollView>
-        <List>
-          {events.map((event) => (
-            <ListItem
-              key={event.name}
-              title={event.name}
-              subtitle={event.name}
-              onPress={() => this.showEvent(event)}
+       <View style={styles.container}>
+        {movies
+          ? <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              // Hide all scroll indicators
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={refresh}
+                />
+              }
+            >
+            <List>
+              {movies.map((movie, index) => <ListItem
+                key={index}
+                title={movie.title}
+                onPress={() => this.showEvent(movie)}
+              />)}
+            </List>
+            </ScrollView>
+          : <ActivityIndicator
+              animating={loading}
+              style={styles.loader}
+              size="large"
             />
-          ))}
-        </List>
-      </ScrollView>
+        }
+      </View>
     );
   }
 }
 
-export default EventList;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,                // take up all screen
+    paddingTop: 20,         // start below status bar
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',     // center horizontally
+    justifyContent: 'center', // center vertically
+  }
+});

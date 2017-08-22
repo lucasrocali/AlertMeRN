@@ -48,12 +48,13 @@ export const Main = TabNavigator({
 });
 
 export const Root = StackNavigator({
-  Login: {
-    screen: LoginStack,
-  },
   Main: {
     screen: Main,
   },
+  Login: {
+    screen: LoginStack,
+  },
+  
 }, {
   mode: 'modal',
   headerMode: 'none',
