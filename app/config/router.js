@@ -25,7 +25,7 @@ export const EventListStack = StackNavigator({
   EventDetail: {
     screen: EventDetail,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.name.toUpperCase()}`,
+      title: `${navigation.state.params.movie.title}`,
     }),
   },
 });

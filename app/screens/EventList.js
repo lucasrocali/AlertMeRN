@@ -26,8 +26,25 @@ import {
 )
 
 export default class EventList extends Component {
-  showEvent = (event) => {
-    this.props.navigation.navigate('EventDetail', { ...event });
+
+  state = {
+    popupIsOpen: false,
+    // Day chosen by user
+    chosenDay: 0,       // choose first day by default
+    // Time chosen by user
+    chosenTime: null,
+  }
+
+  showEvent = (movie) => {
+    console.log(' SHOW EVENT');
+    this.setState({
+        popupIsOpen: true,
+        movie,
+      });
+    console.log(this.state);
+    console.log(this.props);
+    console.log(movie.title);
+    this.props.navigation.navigate('EventDetail',  {movie:movie} );
   };
 
   render() {
